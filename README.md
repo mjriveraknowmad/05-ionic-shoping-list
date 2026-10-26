@@ -35,12 +35,14 @@ O para usar sqlite:
 más info: https://github.com/capacitor-community/sqlite#for-angular-framework
 Copiar el archivo sql-wasm.wasm de node_modules/sql.js/dist/sql-wasm.wasm a la carpeta src/assets
 ó ejecutar `npm run copy-sqlwasm-en-assets` (creamos un script que requiere la librería copyfiles de npm)
+Más información para hacer que funcione en web:
+https://github.com/capacitor-community/sqlite/blob/master/docs/Web-Usage.md
 
 ## Generar páginas
 `ionic g page pages/mipagina`
 
 # Generar servicio
-`ionic g s services/servicio`
+`ionic g s services/sqllite-manager`
 
 
 # Generar pipe
