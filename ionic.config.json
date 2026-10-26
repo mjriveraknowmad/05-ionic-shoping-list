@@ -1,0 +1,7 @@
+{
+  "name": "05-ionic-shoping-list",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
