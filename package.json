@@ -12,7 +12,8 @@
     "lint": "ng lint",
     "generate-icons-android": "npx capacitor-assets generate --android",
     "generate-icons-ios": "npx capacitor-assets generate --ios",
-    "generate-icons-pwa": "npx capacitor-assets generate --pwa"
+    "generate-icons-pwa": "npx capacitor-assets generate --pwa",
+    "copy-sqlwasm-en-assets": "copyfiles -u 3 node_modules/sql.js/dist/sql-wasm.wasm src/assets"
   },
   "private": true,
   "dependencies": {
@@ -22,6 +23,7 @@
     "@angular/forms": "22.2.3",
     "@angular/platform-browser": "22.2.3",
     "@angular/router": "22.2.3",
+    "@capacitor-community/sqlite": "^8.1.1",
     "@capacitor/app": "8.1.2",
     "@capacitor/core": "8.5.3",
     "@capacitor/haptics": "8.0.2",
@@ -29,7 +31,9 @@
     "@capacitor/status-bar": "8.0.4",
     "@ionic/angular": "^9.0.0",
     "ionicons": "^8.1.0",
+    "jeep-sqlite": "^2.8.0",
     "rxjs": "~7.8.0",
+    "sql.js": "1.11.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -41,6 +45,7 @@
     "@capacitor/cli": "8.5.3",
     "@ionic/angular-toolkit": "^13.0.0",
     "angular-eslint": "22.6.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^10.10.0",
     "jsdom": "^30.1.1",
     "typescript": "~6.0.0",
