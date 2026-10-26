@@ -1,5 +1,5 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit } from '@angular/core';
-import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, Injector, OnInit } from '@angular/core';
+import { IonApp, IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { SqlliteManager } from './services/sqllite-manager';
 
 @Component({
@@ -12,7 +12,9 @@ import { SqlliteManager } from './services/sqllite-manager';
 })
 export class AppComponent implements OnInit {
   private platform = inject(Platform);
+  private injector = inject(Injector);
   private sqliteManager = inject(SqlliteManager);
+  public loadingCtrl = inject(LoadingController);
   isWeb = this.sqliteManager.isWeb;
   isReady = this.sqliteManager.isReady;
 
@@ -20,9 +22,22 @@ export class AppComponent implements OnInit {
     this.initApp();
   }
 
-  initApp() {
+  async initApp() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cargando...'
+    });
+    await loading.present();
+
     this.platform.ready().then(() => {
       this.sqliteManager.init();
+    });
+
+    effect(() => {
+      if(this.isReady()){
+        loading.dismiss();
+      }
+    },{
+      injector: this.injector
     });
   }
 }
