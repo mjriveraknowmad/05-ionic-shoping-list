@@ -13,6 +13,8 @@ import { SqlliteManager } from './services/sqllite-manager';
 export class AppComponent implements OnInit {
   private platform = inject(Platform);
   private sqliteManager = inject(SqlliteManager);
+  isWeb = this.sqliteManager.isWeb;
+  isReady = this.sqliteManager.isReady;
 
   ngOnInit() {
     this.initApp();

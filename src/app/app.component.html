@@ -1,4 +1,8 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
-  <jeep-sqlite />
+  @if(isReady()){
+    <ion-router-outlet></ion-router-outlet>
+  }
+  @if(isWeb()){
+    <jeep-sqlite />
+  }
 </ion-app>

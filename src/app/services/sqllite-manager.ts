@@ -10,19 +10,23 @@ export class SqlliteManager {
 
   private platform: Platform = inject(Platform)
 
-  public isWeb = signal(false);
-  public isIos = signal(false);
-  public isReady = signal(false);
+  private _isWeb = signal(false);
+  private _isIos = signal(false);
+  private _isReady = signal(false);
+
+  public isWeb = this._isWeb.asReadonly();
+  public isIos = this._isIos.asReadonly();
+  public isReady = this._isReady.asReadonly();
 
   private readonly DB_NAME = database;
 
   async init(){
 
     if(this.platform.is('desktop')){
-      this.isWeb.set(true);
+      this._isWeb.set(true);
       await CapacitorSQLite.initWebStore();
     }else if(this.platform.is('ios')){
-      this.isIos.set(true);
+      this._isIos.set(true);
     }
 
     const databaseExists: capSQLiteResult = await CapacitorSQLite.isDatabase({ database: this.DB_NAME })
@@ -56,7 +60,7 @@ export class SqlliteManager {
   async connectDatabase(){
     await CapacitorSQLite.createConnection({ database: this.DB_NAME });
     await CapacitorSQLite.open({ database: this.DB_NAME })
-    this.isReady.set(true);
+    this._isReady.set(true);
   }
 
 
