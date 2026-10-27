@@ -19,7 +19,10 @@ export class SqlliteManager {
 
   private readonly DB_NAME = database;
 
+  private databaseExists?: capSQLiteResult = undefined;
+
   async init() {
+    this._isReady.set(false);
     if (this.platform.is('desktop')) {
       this._isWeb.set(true);
       await CapacitorSQLite.initWebStore();
@@ -27,11 +30,13 @@ export class SqlliteManager {
       this._isIos.set(true);
     }
 
-    const databaseExists: capSQLiteResult = await CapacitorSQLite.isDatabase({
-      database: this.DB_NAME,
-    });
+    if (!this.databaseExists) {
+      this.databaseExists= await CapacitorSQLite.isDatabase({
+        database: this.DB_NAME,
+      });
+    }
 
-    if (!databaseExists.result) {
+    if (!this.databaseExists.result) {
       await this.downloadDatabase();
     }
 
@@ -53,6 +58,7 @@ export class SqlliteManager {
   }
 
   async connectDatabase() {
+     this._isReady.set(false);
     await CapacitorSQLite.createConnection({ database: this.DB_NAME });
     await CapacitorSQLite.open({ database: this.DB_NAME });
     this._isReady.set(true);

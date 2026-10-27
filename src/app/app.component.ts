@@ -1,6 +1,9 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, Injector, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet, LoadingController, Platform } from '@ionic/angular';
 import { SqlliteManager } from './services/sqllite-manager';
+import { defineCustomElements as jeepSqlite} from 'jeep-sqlite/loader'
+
+jeepSqlite(window); // Esto solo hace falta para web, no para móvil.
 
 @Component({
   selector: 'app-root',
@@ -19,7 +22,9 @@ export class AppComponent implements OnInit {
   isReady = this.sqliteManager.isReady;
 
   ngOnInit() {
-    this.initApp();
+    setTimeout(() => {
+      this.initApp();
+    }, 100);
   }
 
   async initApp() {
