@@ -1,5 +1,14 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="ion-text-center">
+
+    @if(theme){
+      <ion-buttons slot="start">
+        <ion-icon name="sunny-outline" />
+        <ion-toggle appToggleTheme [themeInitial]="theme" (themeSelected)="setThemeSelected($event)" [checked]="theme==='dark'" />
+        <ion-icon name="moon-outline" />
+      </ion-buttons>
+    }
+
     <ion-title>Mi lista de la compra</ion-title>
     <ion-item slot="end" color="transparent" lines="none">
       <ion-icon name="add-outline" (click)="openModal()" />

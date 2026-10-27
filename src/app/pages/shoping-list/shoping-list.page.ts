@@ -1,29 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  AlertController,
-  IonButton,
-  IonCheckbox,
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonItemDivider,
-  IonItemGroup,
-  IonLabel,
-  IonSearchbar,
-  IonText,
-  IonTitle,
-  IonToolbar,
-  ModalController,
-} from '@ionic/angular';
+import { AlertController, IonButton, IonButtons, IonCheckbox, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonSearchbar, IonText, IonTitle, IonToggle, IonToolbar, ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { addOutline, closeOutline } from 'ionicons/icons';
+import { addOutline, closeOutline, moonOutline, sunnyOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
 import { IGroupedItem, IItem } from '../../models/item.model';
 import { Item } from '../../services/item';
 import { Toast } from '../../services/toast';
+import { Theme } from '../../models/types';
+import { Settings } from '../../services/settings';
+import { ToggleTheme } from '../../directives/toggle-theme';
 
 @Component({
   selector: 'app-shoping-list',
@@ -45,7 +32,10 @@ import { Toast } from '../../services/toast';
     IonCheckbox,
     IonButton,
     IonSearchbar,
-  ],
+    IonToggle,
+    IonButtons,
+    ToggleTheme
+],
 })
 export class ShopingListPage {
   private injector = inject(Injector);
@@ -54,6 +44,9 @@ export class ShopingListPage {
   private itemSvc = inject(Item);
   private toastSvc = inject(Toast);
   private items = this.itemSvc.items;
+  private settingsSvc = inject(Settings);
+  private readonly THEME_KEY = 'THEME';
+  public theme?: Theme;
   public groupItems = signal<IGroupedItem[]>([
     { name: 'Pendientes', items: [] },
     { name: 'Completados', items: [] },
@@ -63,6 +56,8 @@ export class ShopingListPage {
     addIcons({
       addOutline,
       closeOutline,
+      sunnyOutline,
+      moonOutline
     });
 
     effect(() => {
@@ -77,7 +72,8 @@ export class ShopingListPage {
     });
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
+    this.theme = await this.settingsSvc.getSettingByKey(this.THEME_KEY) as Theme || 'light';
     this.itemSvc.getItems();
   }
 
@@ -124,6 +120,11 @@ export class ShopingListPage {
     const target = event.target as HTMLIonSearchbarElement;
     const query = target.value?.trim() || '';
     this.itemSvc.getItems(query);
+  }
+
+  setThemeSelected(value: Theme) {
+    this.theme = value;
+    this.settingsSvc.updateSettingByKey(this.THEME_KEY, value)
   }
 
   async openModal() {
