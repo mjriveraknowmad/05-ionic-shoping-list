@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, Injector, signal } from '@angular/core';
+import { Component, computed, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertController, IonButton, IonButtons, IonCheckbox, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonSearchbar, IonText, IonTitle, IonToggle, IonToolbar, ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -51,6 +51,9 @@ export class ShopingListPage {
     { name: 'Pendientes', items: [] },
     { name: 'Completados', items: [] },
   ]);
+  public emptyGroupsItems = computed(() => {
+    return this.groupItems().every(group => group.items.length === 0);
+  });
 
   constructor() {
     addIcons({

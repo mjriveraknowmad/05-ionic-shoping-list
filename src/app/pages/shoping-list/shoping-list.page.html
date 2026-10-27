@@ -18,24 +18,33 @@
 
 <ion-content [fullscreen]="true">
   <ion-searchbar [debounce]="1000" (ionInput)="filterItems($event)" placeholder="Buscar"></ion-searchbar>
- @for (groupItems of groupItems(); track groupItems.name) {
-  <ion-item-group>
-    <ion-item-divider>
-      <ion-label>{{ groupItems.name }}</ion-label>
-    </ion-item-divider>
 
-    @for (item of groupItems.items; track item.id) {
-      <ion-item lines="none">
-        <ion-button slot="start" fill="clear">
-          <ion-checkbox slot="start" [(ngModel)]="item.checked" (ionChange)="updateItem(item)"></ion-checkbox>
-        </ion-button>
-        <ion-text>{{ item.quantity }} {{item.unit?.description }} {{ item.description }}</ion-text>
-        <ion-icon name="close-outline" slot="end" (click)="confirmDelete(item)"></ion-icon>
-      </ion-item>
+  @if(emptyGroupsItems()){
+    <ion-item lines="none">
+      <ion-text>No hay items en la lista</ion-text>
+    </ion-item>
+  } @else {
+    @for (groupItems of groupItems(); track groupItems.name) {
+      <ion-item-group>
+
+        <ion-item-divider>
+          <ion-label>{{ groupItems.name }}</ion-label>
+        </ion-item-divider>
+
+        @for (item of groupItems.items; track item.id) {
+          <ion-item lines="none">
+            <ion-button slot="start" fill="clear">
+              <ion-checkbox slot="start" [(ngModel)]="item.checked" (ionChange)="updateItem(item)"></ion-checkbox>
+            </ion-button>
+            <ion-text>{{ item.quantity }} {{item.unit?.description }} {{ item.description }}</ion-text>
+            <ion-icon name="close-outline" slot="end" (click)="confirmDelete(item)"></ion-icon>
+          </ion-item>
+        }
+
+      </ion-item-group>
     }
+  }
 
-  </ion-item-group>
-}
 <!-- El ion-button envuelve el ion-checkbox para que al pulsar en el listo de la fila no se active el checkbox por error.
 Esto permite que solo al pulsar directamente sobre el checkbox se cambie su estado. -->
 </ion-content>
