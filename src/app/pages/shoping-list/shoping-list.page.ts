@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController, IonCheckbox, IonButton } from '@ionic/angular';
+import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController, IonCheckbox, IonButton, AlertController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { addOutline, closeOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
@@ -33,6 +33,7 @@ import { Toast } from '../../services/toast';
 export class ShopingListPage {
   private injector = inject(Injector);
   private modalCtrl = inject(ModalController);
+  private alertController = inject(AlertController);
   private itemSvc = inject(Item);
   private toastSvc = inject(Toast);
   private items = this.itemSvc.items;
@@ -71,6 +72,27 @@ export class ShopingListPage {
       );
     });
   }
+
+  confirmDelete(item: IItem) {
+    this.alertController.create({
+      header: 'Borrar el producto',
+      message: `¿Estás seguro de que deseas borrar el producto ${item.description}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Borrar',
+          role: 'confirm',
+          handler: () => {
+            this.deleteItem(item);
+          }
+        }
+      ]
+    }).then(alert => alert.present());
+  }
+
 
   deleteItem(item: IItem) {
     this.itemSvc.deleteItem(item).then(() => {
