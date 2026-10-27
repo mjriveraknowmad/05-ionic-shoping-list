@@ -8,12 +8,18 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>Pendientes:</p>
-  <pre style="max-height: 200px; overflow: auto;">
-    {{ groupItems()[0] | json }}
-  </pre>
-  <p>Completados:</p>
-  <pre style="max-height: 200px; overflow: auto;">
-    {{ groupItems()[1] | json }}
-  </pre>
+ @for (groupItems of groupItems(); track groupItems.name) {
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>{{ groupItems.name }}</ion-label>
+    </ion-item-divider>
+
+    @for (item of groupItems.items; track item.id) {
+      <ion-item>
+        <ion-text>{{ item.quantity }} {{item.unit?.description }} {{ item.description }}</ion-text>
+      </ion-item>
+    }
+
+  </ion-item-group>
+ }
 </ion-content>

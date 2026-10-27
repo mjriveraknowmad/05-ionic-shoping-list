@@ -1,15 +1,7 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, effect, inject, Injector, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, Injector, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  IonContent,
-  IonHeader,
-  IonIcon,
-  IonItem,
-  IonTitle,
-  IonToolbar,
-  ModalController,
-} from '@ionic/angular';
+import { IonContent, IonHeader, IonIcon, IonItem, IonTitle, IonToolbar, ModalController, IonItemGroup, IonItemDivider, IonLabel, IonText } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
@@ -31,12 +23,15 @@ import { IGroupedItem } from '../../models/item.model';
     IonItem,
     IonIcon,
     JsonPipe,
-  ],
+    IonItemGroup,
+    IonItemDivider,
+    IonLabel,
+    IonText
+],
 })
 export class ShopingListPage {
   private injector = inject(Injector);
   private modalCtrl = inject(ModalController);
-  public message = signal('');
   private itemSvc = inject(Item);
   private toastSvc = inject(Toast);
   private items = this.itemSvc.items;
@@ -44,6 +39,9 @@ export class ShopingListPage {
     { name: 'Pendientes', items: [] },
     { name: 'Completados', items: [] },
   ]);
+
+  pendientes = computed(() => this.groupItems()[0]?.items || []);
+  completados = computed(() => this.groupItems()[1]?.items || []);
 
   constructor() {
     addIcons({
