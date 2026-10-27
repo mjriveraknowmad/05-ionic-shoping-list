@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonIcon, IonItem, IonTitle, IonToolbar, ModalController } from '@ionic/angular';
@@ -20,22 +20,25 @@ import { Toast } from '../../services/toast';
     CommonModule,
     FormsModule,
     IonItem,
-    IonIcon
+    IonIcon,
+    JsonPipe
 ],
 })
-export class ShopingListPage implements OnInit {
+export class ShopingListPage {
   private modalCtrl = inject(ModalController);
   public message = signal('');
   private itemSvc = inject(Item);
   private toastSvc = inject(Toast);
+  public items = this.itemSvc.items;
+
   constructor() {
     addIcons({
       addOutline
     });
   }
 
-  ngOnInit() {
-    console.log('ShopingListPage initialized');
+  ionViewWillEnter () {
+    this.itemSvc.getItems();
   }
 
   async openModal() {
