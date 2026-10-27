@@ -1,7 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController, IonCheckbox, IonButton, AlertController } from '@ionic/angular';
+import {
+  AlertController,
+  IonButton,
+  IonCheckbox,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonItem,
+  IonItemDivider,
+  IonItemGroup,
+  IonLabel,
+  IonSearchbar,
+  IonText,
+  IonTitle,
+  IonToolbar,
+  ModalController,
+} from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { addOutline, closeOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
@@ -27,8 +43,9 @@ import { Toast } from '../../services/toast';
     IonLabel,
     IonText,
     IonCheckbox,
-    IonButton
-],
+    IonButton,
+    IonSearchbar,
+  ],
 })
 export class ShopingListPage {
   private injector = inject(Injector);
@@ -101,6 +118,12 @@ export class ShopingListPage {
         `Producto ${item.description} eliminado correctamente`
       );
     });
+  }
+
+  filterItems(event: Event) {
+    const target = event.target as HTMLIonSearchbarElement;
+    const query = target.value?.trim() || '';
+    this.itemSvc.getItems(query);
   }
 
   async openModal() {

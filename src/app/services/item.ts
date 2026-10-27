@@ -30,16 +30,23 @@ export class Item {
       });
   }
 
-  getItems() {
-    const statement = `
+  getItems( description?: string) {
+    let statement = `
       SELECT
       i.id, i.description, i.quantity, i.checked,
       u.id as unitId, u.description as unitDescription
       FROM items i LEFT JOIN units u ON i.unit = u.id
     `;
+    let values = [];
+
+    if (description) {
+      statement += ` WHERE i.description LIKE ?`;
+      values.push(`%${description?.toLowerCase()}%`);
+    }
+
     this._items.set([]);
     return this.sqlliteManager
-      .executeQuery(statement, [])
+      .executeQuery(statement, values)
       .then((results: any[] | undefined) => {
         if (results) {
           return results.map( (row) =>{

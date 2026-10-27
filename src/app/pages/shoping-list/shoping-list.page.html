@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-searchbar [debounce]="1000" (ionInput)="filterItems($event)" placeholder="Buscar"></ion-searchbar>
  @for (groupItems of groupItems(); track groupItems.name) {
   <ion-item-group>
     <ion-item-divider>
