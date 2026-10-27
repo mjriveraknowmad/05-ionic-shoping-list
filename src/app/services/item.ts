@@ -18,7 +18,6 @@ export class Item {
     return this.sqlliteManager
       .executeInstruction(statement, values)
       .then((changes) => {
-        console.log('Item created successfully', changes);
         if(changes && changes.changes && changes.changes.lastId) {
           item.id = changes.changes.lastId;
           this._items.update(currentItems => [...currentItems, item]);
@@ -61,7 +60,6 @@ export class Item {
               checked: row.checked == 1
             };
             this._items.update(currentItems => [...currentItems, item]);
-            console.log('Item retrieved:', row);
             return item;
           });
         }
@@ -89,7 +87,6 @@ export class Item {
     return this.sqlliteManager
       .executeInstruction(statement, values)
       .then((changes) => {
-        console.log('Item updated successfully', changes);
         if (changes?.changes?.changes) {
           this._items.update((currentItems) =>
             currentItems.map((i) => (i.id === item.id ? item : i))
@@ -111,7 +108,6 @@ export class Item {
     return this.sqlliteManager
       .executeInstruction(statement, values)
       .then((changes) => {
-        console.log('Item deleted successfully', changes);
         this._items.update((currentItems) =>
           currentItems.filter((i) => i.id !== item.id)
         );

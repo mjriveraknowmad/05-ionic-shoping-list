@@ -66,7 +66,6 @@ export class ShopingListPage {
         { name: 'Pendientes', items: currentItems.filter((item) => !item.checked) },
         { name: 'Completados', items: currentItems.filter((item) => item.checked) },
       ]);
-      console.log('items updated:', currentItems);
     }, {
       injector: this.injector
     });
@@ -79,7 +78,6 @@ export class ShopingListPage {
 
   updateItem(item: IItem) {
     this.itemSvc.updateItem(item).then(() => {
-      console.log(this.items());
       this.toastSvc.showToast(
         `Producto ${item.description} actualizado correctamente`
       );
@@ -109,7 +107,6 @@ export class ShopingListPage {
 
   deleteItem(item: IItem) {
     this.itemSvc.deleteItem(item).then(() => {
-      console.log(this.items());
       this.toastSvc.showToast(
         `Producto ${item.description} eliminado correctamente`
       );
