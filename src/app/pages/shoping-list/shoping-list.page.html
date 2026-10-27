@@ -8,8 +8,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>{{ message() }}</p>
-  <pre>
-    {{ items() | json }}
+  <p>Pendientes:</p>
+  <pre style="max-height: 200px; overflow: auto;">
+    {{ groupItems()[0] | json }}
+  </pre>
+  <p>Completados:</p>
+  <pre style="max-height: 200px; overflow: auto;">
+    {{ groupItems()[1] | json }}
   </pre>
 </ion-content>

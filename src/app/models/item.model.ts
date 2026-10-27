@@ -7,3 +7,8 @@ export interface IItem {
   unit?: IUnit;
   checked: boolean;
 }
+
+export interface IGroupedItem {
+  name: string;
+  items: IItem[];
+}
