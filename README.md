@@ -46,6 +46,7 @@ https://github.com/capacitor-community/sqlite/blob/master/docs/Web-Usage.md
 
 # Generar servicio
 `ionic g s services/sqllite-manager`
+`ionic g s services/unit`
 
 
 # Generar pipe
