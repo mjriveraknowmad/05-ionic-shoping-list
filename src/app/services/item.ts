@@ -20,6 +20,10 @@ export class Item {
       .executeInstruction(statement, values)
       .then((changes) => {
         console.log('Item created successfully', changes);
+        if(changes && changes.changes && changes.changes.lastId) {
+          item.id = changes.changes.lastId;
+          this._items.update(currentItems => [...currentItems, item]);
+        }
         return changes;
       })
       .catch((error) => {
