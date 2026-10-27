@@ -36,7 +36,7 @@
             <ion-button slot="start" fill="clear">
               <ion-checkbox slot="start" [(ngModel)]="item.checked" (ionChange)="updateItem(item)"></ion-checkbox>
             </ion-button>
-            <ion-text>{{ item.quantity }} {{item.unit?.description }} {{ item.description }}</ion-text>
+            <ion-text [class.strikethrough]="item.checked">{{ item.quantity }} {{item.unit?.description }} {{ item.description }}</ion-text>
             <ion-icon name="close-outline" slot="end" (click)="confirmDelete(item)"></ion-icon>
           </ion-item>
         }
