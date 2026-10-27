@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect, inject, Injector, signal } from '@angular/core';
+import { Component, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController } from '@ionic/angular';
+import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController, IonCheckbox, IonButton } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { addOutline } from 'ionicons/icons';
+import { addOutline, closeOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
-import { IGroupedItem } from '../../models/item.model';
+import { IGroupedItem, IItem } from '../../models/item.model';
 import { Item } from '../../services/item';
 import { Toast } from '../../services/toast';
 
@@ -25,7 +25,9 @@ import { Toast } from '../../services/toast';
     IonItemGroup,
     IonItemDivider,
     IonLabel,
-    IonText
+    IonText,
+    IonCheckbox,
+    IonButton
 ],
 })
 export class ShopingListPage {
@@ -42,18 +44,40 @@ export class ShopingListPage {
   constructor() {
     addIcons({
       addOutline,
+      closeOutline,
+    });
+
+    effect(() => {
+      const currentItems = this.items();
+      this.groupItems.set([
+        { name: 'Pendientes', items: currentItems.filter((item) => !item.checked) },
+        { name: 'Completados', items: currentItems.filter((item) => item.checked) },
+      ]);
+      console.log('items updated:', currentItems);
+    }, {
+      injector: this.injector
     });
   }
 
   ionViewWillEnter() {
     this.itemSvc.getItems();
-    effect(() => {
-      this.groupItems.set([
-        { name: 'Pendientes',  items: this.items().filter(item => !item.checked) },
-        { name: 'Completados', items: this.items().filter(item => item.checked) },
-      ]);
-    },{
-      injector: this.injector
+  }
+
+  updateItem(item: IItem) {
+    this.itemSvc.updateItem(item).then(() => {
+      console.log(this.items());
+      this.toastSvc.showToast(
+        `Producto ${item.description} actualizado correctamente`
+      );
+    });
+  }
+
+  deleteItem(item: IItem) {
+    this.itemSvc.deleteItem(item).then(() => {
+      console.log(this.items());
+      this.toastSvc.showToast(
+        `Producto ${item.description} eliminado correctamente`
+      );
     });
   }
 

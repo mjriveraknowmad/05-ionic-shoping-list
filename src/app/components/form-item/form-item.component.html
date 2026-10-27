@@ -47,7 +47,7 @@
         <ion-item lines="none">
           <ion-select placeholder="Unidad" [(ngModel)]="item.unit">
             @for (unit of units(); track unit.id) {
-            <ion-select-option [value]="unit.id">
+            <ion-select-option [value]="unit">
               {{ unit.description }}
             </ion-select-option>
             }

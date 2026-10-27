@@ -9,13 +9,12 @@ export class Item {
   private _items = signal<IItem[]>([]);
   public items = this._items.asReadonly();
 
-
   createItem(item: IItem) {
     const statement = `
       INSERT INTO items (description, quantity, unit, checked)
       VALUES (?, ?, ?, ?)
     `;
-    const values = [item.description, item.quantity, item.unit, false];
+    const values = [item.description, item.quantity, this.getUnitId(item.unit), item.checked ? 1 : 0];
     return this.sqlliteManager
       .executeInstruction(statement, values)
       .then((changes) => {
@@ -64,5 +63,59 @@ export class Item {
       .catch((error) => {
         console.error('Error retrieving items:', error);
       });
+  }
+
+  updateItem(item: IItem) {
+    const statement = `
+      UPDATE items
+      SET description = ?, quantity = ?, unit = ?, checked = ?
+      WHERE id = ?
+    `;
+    const values = [
+      item.description,
+      item.quantity,
+      this.getUnitId(item.unit),
+      item.checked ? 1 : 0,
+      item.id,
+    ];
+
+    return this.sqlliteManager
+      .executeInstruction(statement, values)
+      .then((changes) => {
+        console.log('Item updated successfully', changes);
+        if (changes?.changes?.changes) {
+          this._items.update((currentItems) =>
+            currentItems.map((i) => (i.id === item.id ? item : i))
+          );
+        }
+        return changes;
+      })
+      .catch((error) => {
+        console.error('Error updating item:', error);
+      });
+  }
+
+  deleteItem(item: IItem) {
+    const statement = `
+      DELETE FROM items
+      WHERE id = ?
+    `;
+    const values = [item.id];
+    return this.sqlliteManager
+      .executeInstruction(statement, values)
+      .then((changes) => {
+        console.log('Item deleted successfully', changes);
+        this._items.update((currentItems) =>
+          currentItems.filter((i) => i.id !== item.id)
+        );
+        return changes;
+      })
+      .catch((error) => {
+        console.error('Error deleting item:', error);
+      });
+  }
+
+  private getUnitId(unit: IUnit | undefined): number | null {
+    return typeof unit?.id === 'number' ? unit.id : null;
   }
 }
