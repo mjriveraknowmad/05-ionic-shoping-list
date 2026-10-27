@@ -41,6 +41,9 @@ https://github.com/capacitor-community/sqlite/blob/master/docs/Web-Usage.md
 ## Generar páginas
 `ionic g page pages/mipagina`
 
+# Generar componentes
+`ionic g c components/form-item`
+
 # Generar servicio
 `ionic g s services/sqllite-manager`
 
