@@ -5,6 +5,8 @@ import { IonContent, IonHeader, IonIcon, IonItem, IonTitle, IonToolbar, ModalCon
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
+import { Item } from '../../services/item';
+import { Toast } from '../../services/toast';
 
 @Component({
   selector: 'app-shoping-list',
@@ -24,6 +26,8 @@ import { FormItemComponent } from '../../components/form-item/form-item.componen
 export class ShopingListPage implements OnInit {
   private modalCtrl = inject(ModalController);
   public message = signal('');
+  private itemSvc = inject(Item);
+  private toastSvc = inject(Toast);
   constructor() {
     addIcons({
       addOutline
@@ -45,7 +49,11 @@ export class ShopingListPage implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      this.message.set(`Producto a añadir: ${data.description} con cantidad: ${data.quantity}  y unidad ${data.unit}`);
+      this.itemSvc.createItem(data).then(() => {
+        this.toastSvc.showToast(`Producto ${data.description} añadido correctamente`);
+      }).catch((error) => {
+        this.toastSvc.showToast('Error adding item');
+      });
     }
   }
 }
