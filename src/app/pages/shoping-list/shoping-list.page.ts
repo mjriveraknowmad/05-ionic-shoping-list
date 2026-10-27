@@ -1,13 +1,13 @@
-import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, computed, effect, inject, Injector, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, computed, effect, inject, Injector, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonIcon, IonItem, IonTitle, IonToolbar, ModalController, IonItemGroup, IonItemDivider, IonLabel, IonText } from '@ionic/angular';
+import { IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonItemGroup, IonLabel, IonText, IonTitle, IonToolbar, ModalController } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { FormItemComponent } from '../../components/form-item/form-item.component';
+import { IGroupedItem } from '../../models/item.model';
 import { Item } from '../../services/item';
 import { Toast } from '../../services/toast';
-import { IGroupedItem } from '../../models/item.model';
 
 @Component({
   selector: 'app-shoping-list',
@@ -22,7 +22,6 @@ import { IGroupedItem } from '../../models/item.model';
     FormsModule,
     IonItem,
     IonIcon,
-    JsonPipe,
     IonItemGroup,
     IonItemDivider,
     IonLabel,
