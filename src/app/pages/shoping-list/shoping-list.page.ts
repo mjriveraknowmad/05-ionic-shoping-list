@@ -39,9 +39,6 @@ export class ShopingListPage {
     { name: 'Completados', items: [] },
   ]);
 
-  pendientes = computed(() => this.groupItems()[0]?.items || []);
-  completados = computed(() => this.groupItems()[1]?.items || []);
-
   constructor() {
     addIcons({
       addOutline,
