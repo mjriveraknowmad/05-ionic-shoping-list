@@ -45,7 +45,7 @@ export class ShopingListPage implements OnInit {
     const { data, role } = await modal.onWillDismiss();
 
     if (role === 'confirm') {
-      this.message.set(`Hello, ${data()}!`);
+      this.message.set(`Producto a añadir: ${data.description} con cantidad: ${data.quantity}  y unidad ${data.unit}`);
     }
   }
 }
